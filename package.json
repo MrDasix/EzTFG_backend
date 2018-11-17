@@ -1,11 +1,24 @@
 {
   "name": "eztfg",
   "version": "1.0.0",
-  "description": "",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "mongodb": "^3.1.10"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MrDasix/EzTFG_backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MrDasix/EzTFG_backend/issues"
+  },
+  "homepage": "https://github.com/MrDasix/EzTFG_backend#readme",
+  "description": ""
 }
