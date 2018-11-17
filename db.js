@@ -29,16 +29,26 @@ module.exports = {
                 callback(err, null);
             } else {
                 var db = client.db("tfg");
-                var newUser = {
-                    username:username,
-                    password:password,
-                    is_professor: is_professor
-                };
-                db.collection("users").insertOne(newUser, function(err, res) {
-                    callback(err, res);
-                    console.log("User "+username+" added correctly");
-                    client.close();
-                });
+                db.collection("users").findOne( { username: username },function(err,result){
+
+                    if(result != null){
+                        console.log('amic que fas¿¿¿ja existeix loco');
+                        callback(err,result);
+                        client.close();
+                    }
+                    else{
+                        var newUser = {
+                            username:username,
+                            password:password,
+                            is_professor: is_professor
+                        };
+                        db.collection("users").insertOne(newUser, function(err, res) {
+                            callback(err, res);
+                            console.log("User "+username+" added correctly");
+                            client.close();
+                        });
+                     }
+                });            
             }
         });
     },
