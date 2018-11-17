@@ -31,7 +31,7 @@ module.exports = {
                 var db = client.db("tfg");
                 var newUser = {
                     username:username,
-                    password:password,
+                    password:password
                 };
                 db.collection("users").insertOne(newUser, function(err, res) {
                     callback(err, res);

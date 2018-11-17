@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 var MongoClient = mongo.MongoClient;
 
 const app = express();
-const port = 3000;
+const port = 3999;
 
 var mongo = require('./db.js');
 
@@ -22,8 +22,8 @@ app.get("/main",(req,res)=>res.render("main"));
 app.post("/register",function(req,res){
     var username = req.body.username;
     var password = req.body.password;
-    var professor = req.body.professor;
-    mongo.register(username,password,professor,function(err,result){
+
+    mongo.register(username,password,function(err,result){
         if(err){
             res.render("Error");
         }else{
