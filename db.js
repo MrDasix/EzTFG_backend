@@ -4,7 +4,7 @@ var url = "mongodb://localhost:27017/tfg";
 
 module.exports = {
 
-    logIn: function(username,password,callback){
+    login: function(username,password,callback){
         MongoClient.connect(url, function(err, client) {
             if (err) {
                 console.log('Unable to connect to the mongoDB server. Error: ', err);
@@ -31,7 +31,7 @@ module.exports = {
                 var db = client.db("tfg");
                 var newUser = {
                     username:username,
-                    password:password
+                    password:password,
                 };
                 db.collection("users").insertOne(newUser, function(err, res) {
                     callback(err, res);
