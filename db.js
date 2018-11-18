@@ -18,6 +18,10 @@ module.exports = {
                     password:password
                 };
                 db.collection("users").findOne(oldUser, function(err, result) {
+                    if(err){
+                        console.log('no existeix l\'usuari ', err);
+                        callback(err, null);                 
+                    }
                    // console.log("login successful for :" + username);
                     console.log(result);
                     callback(err, result);
@@ -55,8 +59,7 @@ module.exports = {
                 });            
             }
         });
-    },
-    
+    },    
     resetdb: function(callback){
         MongoClient.connect(url, function(err, client) {
             if (err) {
@@ -173,7 +176,8 @@ module.exports = {
                                 alumne:null,
                                 creador:email,
                                 description:null,
-                                id:id_tfg
+                                id:id_tfg,
+                                comments:[]
                             }
                         }
                         else {
@@ -183,7 +187,8 @@ module.exports = {
                                 alumne:email,
                                 creador:email,
                                 description:null,
-                                id:id_tfg
+                                id:id_tfg,
+                                comments:[]
                             };
                         }
                         console.log("li he posat la id " + id_tfg);
@@ -251,6 +256,43 @@ module.exports = {
             }
         });
     },
+
+    add_comment_to_tfg: function(title,fullcomment,callback){
+        MongoClient.connect(url, function(err, client) {
+            if (err) {
+                console.log('Unable to connect to the mongoDB server. Error: ', err);
+                callback(err, null);
+            } else {
+                var db = client.db("tfg");
+
+                db.collection("tfgs").findOne( { title: title },function(err,result){
+
+                    if(result == null){
+                        console.log('amic que fas¿¿¿NO existeix loco');
+                        callback(err,result);
+                        client.close();
+                    }
+                    else{
+                        var coments = result.comments;
+                        //console.log(typeof fullcomment);
+                        if(coments===undefined || coments===null) {
+                            console.log("yesssssssssssssssss");
+                            comments = [1];
+                            comments[0] = fullcomment;
+                        }  
+                        else coments.push(fullcomment)
+                        db.collection("tfgs").updateOne({title:title},{$set:{"comments":coments} }, function(err, res) {
+                            callback(err, res);
+                            console.log("tfg "+title  +" comment updated correctly");
+                            client.close();
+                        });
+                    }
+                });    
+            }
+        });
+    },
+
+
 
     add_user_to_tfg: function(title,user,is_professor,callback){
         MongoClient.connect(url, function(err, client) {

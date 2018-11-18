@@ -15,6 +15,7 @@ app.use(bodyParser.urlencoded({
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => res.render("index"));
+app.get("/register",(req,res) => res.render("register"));
 
 app.get("/login",function(req,res){
     var username = req.query.username;
@@ -156,16 +157,28 @@ app.get("/get_tfg_disponibles",function(req,res){
     });
 });
 
-
+app.post("/add_comment_to_tfg",function(req,res){
+    console.log("add_comment_to_tfg executed");
+    var title = req.body.title;
+    var username = req.body.username;
+    var comment = req.body.comment;
+    var fullcomment = {
+        name:username,
+        comm:comment
+    }
+    mongo.add_comment_to_tfg(title,fullcomment,function(err,result){
+        if(err){
+            res.render("Error la db no furula");
+        }else{
+            res.redirect("/");
+        }
+    });
+});
 
 app.get("/reset",function(req,res){
-   // mongo.insert_tfg("tfg_de_profe",true,"2",function(err,res){
-
-  // });
-
-   // mongo.remove_tfg("soc un nou tfg",function(err,res){
-
-    //});
+   mongo.resetdb(function(err,result){
+        console.log("HEH");
+   });
 });
 
 app.get("*",(req,res) => res.redirect("/"));
